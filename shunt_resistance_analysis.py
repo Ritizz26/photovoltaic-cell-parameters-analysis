@@ -9,7 +9,7 @@ n=1
 Rsh=np.array([50,100,150,2000])  # Shunt resistance values
 Rs=1  # Series resistance value
 V=np.linspace(0,0.6,1000)
-
+results=[]
 Iph=0.030  # Photocurrent value
 def solar_equation(I_real,V,Rsh):
     return I_real-Iph+Io*(np.exp(q*(V+I_real*Rs)/(n*k*T))-1)+(V+I_real*Rs)/Rsh
@@ -35,7 +35,9 @@ for R in Rsh:
     print("Vmp:",Vmp)
     FF=Pmax/(Voc*Isc)
     print("Fill factor:",FF)
+    results.append((R, Isc, Voc, Imp, Vmp, Pmax, FF))
     plt.plot(V,I_real,label='Real I-V Curve for Rsh={}'.format(R))
+np.savetxt("shunt_resistance_results.csv", results, header='Rsh\tIsc\tVoc\tImp\tVmp\tPmax\tFF', fmt='%1.5f', delimiter='\t')
 plt.xlabel('Voltage(X)')
 plt.ylabel('Current(Y)')
 plt.grid()
