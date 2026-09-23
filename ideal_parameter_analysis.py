@@ -7,6 +7,7 @@ Io=1e-10
 n=1
 Iph=np.array([0.030, 0.09, 0.15])  # Photocurrent values for different light intensities
 V=np.linspace(0,0.6,1000)
+results=[]
 for Iph in Iph:
     I_ideal= Iph-Io*(np.exp(q*V/(k*T))-1)
     Isc=I_ideal[0]
@@ -25,6 +26,7 @@ for Iph in Iph:
     print("Vmp:",Vmp)
     FF=Pmax/(Voc*Isc)
     print("Fill factor:",FF)
+    results.append((Iph, Isc, Voc, Imp, Vmp, Pmax, FF))
     plt.plot(V,I_ideal,label='Ideal I-V Curve for Iph={}'.format(Iph))
 plt.xlabel('Voltage(X)')
 plt.ylabel('Current(Y)')
@@ -32,3 +34,4 @@ plt.grid()
 plt.legend()
 plt.title("I-V Curve of Solar Cell")
 plt.show()
+np.savetxt("ideal_parameter_results.csv", results, header='Iph\tIsc\tVoc\tImp\tVmp\tPmax\tFF', fmt='%1.5f', delimiter='\t')
